@@ -1,4 +1,5 @@
 import strutils, sequtils, math
+import checksums/md5
 
 proc run(f:proc, filename: string): int=
   let input = readFile(filename)
@@ -63,8 +64,30 @@ proc ex0202(input: string): int =
       break
   return c
     
+proc ex0401(input: string): int=
+  var txt = input
+  var hashed: string
+  for i in 0..100_000_000:
+    hashed = getMD5(txt & $i)
+    #echo hashed, " ", txt
+    if hashed[0..4] == "00000":
+      return i
+  return 0
 
-var res = run(ex0101, "data/ex01.txt")
+proc ex0402(input: string): int=
+  var txt = input
+  var hashed: string
+  for i in 0..100_000_000:
+    hashed = getMD5(txt & $i)
+    #echo hashed, " ", txt
+    if hashed[0..5] == "000000":
+      return i
+  return 0
+
+
+
+var res:int
+res = run(ex0101, "data/ex01.txt")
 echo "Solution to day 1 exercise 1 = ", res
 res = run(ex0102, "data/ex01.txt")
 echo "Solution to day 1 exercise 2 = ", res
@@ -72,5 +95,7 @@ res = run(ex0201, "data/ex02.txt")
 echo "Solution to day 2 exercise 1 = ", res
 res = run(ex0202, "data/ex02.txt")
 echo "Solution to day 2 exercise 2 = ", res
-
-
+res = ex0401("yzbqklnj")
+echo "Solution to day 4 exercise 1 = ", res
+res = ex0402("yzbqklnj")
+echo "Solution to day 4 exercise 2 = ", res
