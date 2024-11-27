@@ -84,7 +84,40 @@ proc ex0402(input: string): int=
       return i
   return 0
 
-
+proc ex0501(input: string): int=
+  let strings = input.splitlines()
+  var c:int = 0
+  var length:int
+  var vowel: bool = false
+  var cons: bool = false
+  var substr: bool = false
+  var num_vowels:int = 0
+  for s in strings:
+    length = s.len
+    for i in 0..length-2:
+      if s[i] == s[i+1]:
+        cons = true
+    for ch in s:
+      case ch:
+        of 'a', 'e', 'i', 'o', 'u':
+          num_vowels += 1
+        else:
+          discard
+    for i in 0..length-2:
+      case s[i..i+1]:
+        of "ab", "cd", "pq", "xy":
+          substr = true
+        else:
+          discard
+    if num_vowels >= 3:
+      vowel = true
+    if cons and vowel and not substr:
+      c += 1
+    num_vowels = 0
+    vowel = false
+    cons = false
+    substr = false 
+  return c
 
 var res:int
 res = run(ex0101, "data/ex01.txt")
@@ -99,3 +132,5 @@ res = ex0401("yzbqklnj")
 echo "Solution to day 4 exercise 1 = ", res
 res = ex0402("yzbqklnj")
 echo "Solution to day 4 exercise 2 = ", res
+res = run(ex0501, "data/ex05.txt")
+echo "Solution to day 5 exercise 1 = ", res
